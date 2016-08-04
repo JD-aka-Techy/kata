@@ -19,18 +19,21 @@ describe('The HotelList component', () => {
     .to.have.length(1, 'Hotel list should render an unordered list');
   });
 
+  it('should render not found if no hotels are passed in',() => {
+    expect(shallow(<HotelList hotels={[]} />).find('li').text()).to.equal('Not found')
+  })
 
   it('should render a li element for each hotel passed in including 0', () => {
     let testData = [
       [],
       [
-        {"Name":'1',"StarRating":'2',"Facilities": ['']},
-        {"Name":'2',"StarRating":'2',"Facilities": ['']}
+        {"Name":'1',"StarRating":'2',"Facilities": []},
+        {"Name":'2',"StarRating":'2',"Facilities": []}
       ],
       [
-        {"Name":'1',"StarRating":'2',"Facilities": ['']},
-        {"Name":'2',"StarRating":'2',"Facilities": ['']},
-        {"Name":'2',"StarRating":'2',"Facilities": ['']}
+        {"Name":'1',"StarRating":'2',"Facilities": []},
+        {"Name":'2',"StarRating":'2',"Facilities": []},
+        {"Name":'2',"StarRating":'2',"Facilities": []}
       ]
     ];
     testData.forEach((mockHotels) => {

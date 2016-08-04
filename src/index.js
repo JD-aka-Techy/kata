@@ -11,27 +11,27 @@ import App from './components/App';
 let hotels = [
   {
     "Name": "Faulty Towers",
-    "StartRating": 5,
+    "StarRating": 4,
     "Facilities": ["car park", "pool"]
   },
   {
     "Name": "Marigold",
-    "StartRating": 4,
+    "StarRating": 1,
     "Facilities": ["car park", "cafe", "pool"]
   },
   {
     "Name": "Hotel3",
-    "StartRating": 3,
+    "StarRating": 3,
     "Facilities": ["cafe", "pool"]
   },
   {
     "Name": "Hotel4",
-    "StartRating": 2,
+    "StarRating": 2,
     "Facilities": ["car park", "pool"]
   },
   {
     "Name": "Hotel5",
-    "StartRating": 1,
+    "StarRating": 5,
     "Facilities": ["car park"]
   }
 ];
