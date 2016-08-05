@@ -26,6 +26,21 @@ export default class App extends Component {
     this.handleAddFilter = this.handleAddFilter.bind(this);
     this.handleRemoveFilter = this.handleRemoveFilter.bind(this);
     this.handleFilter = this.handleFilter.bind(this);
+    this.parseFacilities = this.parseFacilities.bind(this)
+  }
+
+
+  /*
+    @hotels: JSON Array of hotel objects
+  */
+  parseFacilities(hotels) {
+    if(!hotels) {
+      return [];
+    }
+    const all = hotels.reduce((acc,curr) => {
+      return [...acc, ...curr.Facilities];
+    },[]);
+    return Array.from(new Set(all));
   }
 
   /*
@@ -87,12 +102,15 @@ export default class App extends Component {
           currentFilters = { activeFilters} />
         <div>
           <ListSortControl
-            sortAsc={()=> this.handleSort('ASC_RATING') }
-            sortDesc={()=>this.handleSort('DESC_RATING') }
+            sortFunc={ this.handleSort }
           />
           <HotelList hotels = { hotels } />
         </div>
       </div>
     );
   }
+}
+
+App.propTypes = {
+
 }

@@ -12,22 +12,46 @@ import ListSortControl from '../../src/components/ListSortControl';
 describe('Main <App /> application component', () => {
 
   // Structure
+  describe('renders the right parts', () => {
+
+    const wrapper = shallow(<App hotelData={ [{"Facilities": []}]}/>)
+
+    it('should be a div with class of app', () => {
+      expect(wrapper.is('div'))
+      .to.equal(true, 'App component did not render as a div with class app');
+    });
+
+    it('should render a HotelList component', () => {
+      expect(wrapper.find('HotelList'))
+      .to.have.length(1, 'App component should have a Hotel list component');
+    });
+
+    it('should render a FilterControls component', () => {
+      expect(wrapper.find('FilterControls'))
+      .to.have.length(1, 'App component should have a FilterControls component');
+    });
+
+    it('should have a ListSortControl component',() => {
+      expect(wrapper.find('ListSortControl'))
+      .to.have.length(1, 'App component should have a ListSortControl component');
+    });
+
+  });
+
+
+  describe('<App />s props and state', () => {
+
+    const wrapper = shallow(<App hotelData={ [{"Facilities": []}]}/>)
+
+    it('passes sortFunc prop bound to handleSort to <ListSortControl/>', () => {
+      expect(wrapper.find('ListSortControl').props('sortFunc').sortFunc)
+      .to.be.defined;
+    });
+
+  });
+
+
   const wrapper = shallow(<App hotelData={ [{"Facilities": []}]}/>)
-
-  it('should render a HotelList component', () => {
-    expect(wrapper.find('HotelList'))
-    .to.have.length(1, 'App component should have a Hotel list component');
-  });
-
-  it('should render a FilterControls component', () => {
-    expect(wrapper.find('FilterControls'))
-    .to.have.length(1, 'App component should have a FilterControls component');
-  });
-
-  it('should have a ListSortControl component',() => {
-    expect(wrapper.find('ListSortControl'))
-    .to.have.length(1, 'App component should have a ListSortControl component');
-  });
 
   it('should save hotels passed in as state.hotels', () => {
 
@@ -128,6 +152,47 @@ describe('Main <App /> application component', () => {
      .to.equal('Hotel3', 'handleFilter method did not return the correct data when app has filters');
   });
 
+  describe('parseFacilities method', () => {
+
+    const parserData = [
+      {
+      "Name": "Hotel3",
+      "StarRating": 3,
+      "Facilities": ["cafe", "pool"]
+      },
+      {
+      "Name": "Hotel4",
+      "StarRating": 2,
+      "Facilities": ["car park", "pool"]
+      },
+      {
+      "Name": "Hotel5",
+      "StarRating": 5,
+      "Facilities": ["car park"]
+      }
+    ];
+
+    let parseFacilitiesTest = shallow(<App hotelData={parserData}/>);
+
+    it('is a function', () => {
+      expect(typeof parseFacilitiesTest.instance().parseFacilities)
+       .to.equal('function', 'parseFacilities is not a function')
+    });
+
+    it('returns an array', () => {
+      const returned = parseFacilitiesTest.instance().parseFacilities()
+      expect(Array.isArray(returned)).to.equal(true, 'parseFacilities did not return and array');
+    });
+
+    it('returns an array of unique facilities when passed an array of hotel objects', () => {
+      const returned = parseFacilitiesTest.instance().parseFacilities(parserData);
+      expect(returned.length).to.equal(3);
+      const expected = JSON.stringify(["cafe","pool","car park"]);
+      expect(JSON.stringify(returned)).to.equal(expected);
+    });
+
+  });
+// Comonent Function
 
 
 });
