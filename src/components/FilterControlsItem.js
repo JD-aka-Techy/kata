@@ -8,7 +8,7 @@ import React from 'react';
 */
 const FilterControlsItem = ({item, toggleFilter, active}) => (
   <li
-    className= { active ? "availible-filters__option" : "availible-filters__option--active"}
+    className= { active ? "availible-filters__option--active" : "availible-filters__option"}
     onClick={ () => toggleFilter(item) } >
     { item }
   </li>

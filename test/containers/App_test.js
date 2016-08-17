@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
 
-import {_App} from '../../src/containers/App';
+import { _App } from '../../src/containers/App';
 
 const mockStore = {
   actions: {
@@ -35,7 +35,7 @@ describe('Main <App /> application component', () => {
 
   it('should render a FilterControls component', () => {
     const expected = 1;
-    const actual = wrapper.find('Connect(FilterControls)').length;
+    const actual = wrapper.find('Connect(_FilterControls)').length;
     expect(actual).to.equal(expected,
       'App component should render a FilterControls component -> shallow rendered as Connect(FilterControls)');
   });
@@ -59,8 +59,8 @@ describe('Main <App /> application component', () => {
     // TODO: find more robust way of targetting HotelList
     const expected = [{ Facilities: ['test2'] }]; // based on mockStore's state
     const actual = wrapper.find('HotelList').node.props.hotels;
-    expect(expected).to.deep.equal(actual);
-    console.log(actual)
+    expect(expected).to.deep.equal(actual,
+      'App should pass a filtered hotel list to the HotelList component');
   });
 
 

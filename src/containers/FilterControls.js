@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
   @allFilters: array
   @toggleFilter: function
 */
-class FilterControls extends React.Component {
+export class _FilterControls extends React.Component {
 
   constructor(props) {
     super(props);
@@ -44,7 +44,7 @@ class FilterControls extends React.Component {
                 key={i}
                 item={item}
                 toggleFilter={ actions.toggleFilter }
-                active={ activeFilters.indexOf(item) === -1 }
+                active={ activeFilters.indexOf(item) !== -1 }
                 />
             ))
           }
@@ -54,11 +54,9 @@ class FilterControls extends React.Component {
   }
 };
 
-FilterControls = connect(
+export default connect(
   state => ({ allFilters: state.filters.allFilters, activeFilters: state.filters.activeFilters}),
   dispatch => ({
     actions: bindActionCreators(Actions ,dispatch)
   })
-)(FilterControls);
-
-export default FilterControls;
+)(_FilterControls);

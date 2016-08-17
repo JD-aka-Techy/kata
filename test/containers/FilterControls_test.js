@@ -3,63 +3,133 @@ import { shallow } from 'enzyme';
 import React from 'react';
 
 
-import FilterControls from '../../src/containers/FilterControls';
+import { _FilterControls } from '../../src/containers/FilterControls';
 
 
-/*
+const mockStore = {
+  activeFilters: [2],
+  allFilters: [1,2,3],
+  actions: {
+    findFilters: () => '',
+    sortHotels: () => '',
+    toggleFilter: () => ''
+  }
+};
+
+
 describe('The <FilterControls /> component', () => {
   const activeFilters = ['pool'];
-  const StructureTester = shallow(<FilterControls currentFilters = { activeFilters} />)
+  const wrapper = shallow(<_FilterControls {...mockStore} />)
 
   // Structure
   it('should render a class filter-panel div', () => {
-    expect(StructureTester.is('div.filter-panel'))
-    .to.equal(true, 'filter-panel div not found');
+    const expected = true;
+    const actual = wrapper.is('div.filter-panel');
+    expect(actual).to.equal(true,
+      'filter-panel div not found');
   });
 
-  it('should render a filter-panel--open div when state.open is true', () => {
-    StructureTester.setState({open: true});
-    StructureTester.update();
-    expect(StructureTester.is('div.filter-panel--open'))
-    .to.equal(true, 'filter-panel--open div not found when state.open is set');
+  it('should render a filter-panel__title div', () => {
+    const expected = 1;
+    const actual = wrapper.find('div.filter-panel__title').length;
+    expect(actual).to.equal(expected,
+      'FilterControls should render a filter-panel__title div')
   });
 
-  it('should render a ul element with class availible-filters', () => {
-    expect(StructureTester.find('ul.availible-filters'))
-    .to.be.length(1, '.availible-filters div not found in FilterControls component');
+  it('should render a ul with class availible-filters', () => {
+    const expected = 1;
+    const actual = wrapper.find('ul.availible-filters').length;
+    expect(actual).to.equal(expected,
+      'FilterControls should render a ul element with the class availible-filters');
   });
 
-  it('should render a li element with class availible-filters__option for each option', () => {
-    // currently 2 due to hardcoded options
-    expect(StructureTester.find('li.availible-filters__option'))
-    .to.be.length(2, 'did not find 2 li.availible-filters__option elements in FilterControls component');
+  it('should render a FilterControlsItem for each member of allFilters', () => {
+    const expected = 3;
+    const actual = wrapper.find('ul.availible-filters FilterControlsItem').length;
+    expect(actual).to.equal(expected,
+      'FilterControls should render a FilterControlsItem for each member of allFilters');
   });
 
-  it(`should render a li element with class availible-filters__option--active for
-    each option currently in currentFilters`, () => {
-    // currently 1 due to hardcoded options
-    expect(StructureTester.find('li.availible-filters__option--active'))
-    .to.be.length(1, 'did not find 2 li.availible-filters__option elements in FilterControls component');
+  it('should pass the correct props to each FilterControlsItem', () => {
+    let expected, actual;
+    //{ item: 1, toggleFilter: () => '', active: true };
+    const props = wrapper.find('FilterControlsItem').nodes[0].props;
+    expected = 1;
+    actual = props.item;
+    expect(actual).to.equal(expected, 'FilterControlsItem did not recieve the correct item prop');
+
+    expected = 'function'
+    actual = typeof props.toggleFilter
+    expect(actual).to.equal(expected,
+      'FilterControlsItem did not recieve a function as toggleFilter prop');
+
+    expected = false
+    actual = props.active
+    expect(actual).to.equal(expected, 'FilterControlsItem did not recieve the correct active prop')
+
+    // active should alter if item is in activeFilters in this case 2
+    expected = true;
+    actual = wrapper.find('FilterControlsItem').nodes[1].props.active;
+    expect(actual).to.equal(expected,
+      'FilterControlsItem did not recieve the correct active prop when item was active')
   });
 
   // Methods
-  it('should return correctly when isActive is called with an option dependant on currentFilters passed in', () => {
-    const activeFilters = ['pool'];
-    const isActiveTester = shallow(<FilterControls currentFilters = { activeFilters} />);
-    expect(isActiveTester.instance().isActive('pool')).to.equal(true,
-       'isActive did not return true when called with a word in its current filters' );
-    expect(isActiveTester.instance().isActive('impossible')).equal(false,
-     'isActive did not return false when called with a word not in its current filters');
+  it('should have internal state property Open initialised to false', () => {
+    const expected = false
+    const actual = wrapper.state().open
+    expect(actual).to.equal(expected,
+      'FilterControls internal state.open should initialise to false');
   });
 
-  it('should toggle state.open when handleOpen is called', () => {
-    const activeFilters = ['pool'];
-    const isOpenTester = shallow(<FilterControls currentFilters = { activeFilters} />);
-    isOpenTester.instance().handleOpen();
-    expect(isOpenTester.state('open')).to.equal(true, 'state.open did not toggle to true when calling handleOpen')
+  it('should toggle its internal state to when handleOpen is called', () => {
+    let expected, actual;
+    const toggleIt = () => {
+      wrapper.instance().handleOpen();
+      wrapper.update();
+    };
+    expected = true;
+    toggleIt();
+    actual = wrapper.state().open;
+    expect(actual).to.equal(expected,
+      'FilterControls state.open should be toggled false to true when handleToggle is called on false');
+
+    expected = false;
+    toggleIt();
+    actual = wrapper.state().open;
+    expect(actual).to.equal(expected,
+      'FilterControls state.open should be toggled true to false when handleToggle is called on true');
+  });
+
+  // interaction
+  it('should toggle open the filter-panel when filter-panel__title is clicked', () => {
+    let expected, actual;
+    const click = () => wrapper.find('.filter-panel__title').simulate('click');
+
+    // should start closed
+    expected = 0
+    actual = wrapper.find('.filter-panel--open').length;
+    expect(actual).to.equal(expected,
+      '.filter-panel--open should not be found on instantiation');
+
+    click();
+    
+    // now open
+    expected = 1;
+    actual = wrapper.find('.filter-panel--open').length;
+    expect(actual).to.equal(expected,
+      'filter-panel--open should have been found when filter-panel__title was clicked');
+
+    click();
+
+    // close again
+    expected = 0;
+    actual = wrapper.find('.filter-panel--open').length;
+    expect(actual).to.equal(expected,
+      '.filter-panel--open should not be found after filter-panel__title is clicked while open');
+
   });
 
 
 
-
-});*/
+});
