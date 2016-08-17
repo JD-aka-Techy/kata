@@ -7,7 +7,7 @@ const phimg = 'https://placemat.imgix.net/placeholder_images/images/000/000/042/
 */
 const HotelListItem = ({ hotel }) => (
   <li className="hotel">
-    <img src={phimg}/>
+    <img src={phimg} alt="an image of the hotel"/>
     <div className="hotel__name">
       { hotel.Name }
     </div>
