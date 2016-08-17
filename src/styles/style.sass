@@ -15,42 +15,44 @@
 $root-font-size: 16px
 $main-font: 'Lato', sans-serif
 $main-font-col: rgba(black, 0.9)
-$main-col: rgba(65, 20, 133,1)
-$highlight-col: #D58E00
-$backing-col: #191919
+$invert-font-col: white
+
+$main-col: white
+$highlight-col: #641eeb
+$backing-col: #EE9736
 
 //Base
 html, #root
-  height: 100%
-  width: 100%
+  min-height: 100%
+  // because it looks odd flush in the example
+  padding: 2rem 0
 
 body
   font-size: $root-font-size
   color: $main-font-col
-  padding-top: 5rem
-  background: $backing-col
-  height: 100%
+  background: linear-gradient(20deg, lighten($backing-col, 10%), darken($backing-col,10%))
+  min-height: 100%
 
 .app
   position: relative
   max-width: 37.5rem
+  padding-bottom: 1rem
   margin: 0 auto
-  padding: 2rem
   background: white
+  border-radius: 2px
   font-family: $main-font
   box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)
 
 /* Filter panel Section */
 [class*='filter-panel']
   transition: max-height 0.2s linear
-  padding: 0.5rem 2rem 1.5rem 2rem
+  padding: 1rem 2rem 1.5rem 2rem
   background: $main-col
   text-align: center
-  color: $highlight-col
 
 .filter-panel
   // max height with overflow hidden as height cant be animated
-  max-height: 0px
+  max-height: 1rem
   overflow: hidden
   .filter-panel__title::after
     content: '+'
@@ -58,17 +60,25 @@ body
 .filter-panel--open
   // max-height larger than needed allows animation
   max-height: 10rem
+  .availible-filters
+    opacity: 1
 
 .filter-panel__title
   text-align: center
   text-decoration: underline
   cursor: pointer
+  font-size: 1.2rem
+  &:hover,&:focus
+    color: $highlight-col
 
 .filter-panel__title::after
   content: '-'
 
 .availible-filters
   padding: 1rem
+  transition: opacity .2s
+  transition-delay: .1s
+  opacity: 0
 
 [class*='availible-filters__option']
   display: inline-block
@@ -84,46 +94,65 @@ body
 .availible-filters__option--active
   background: $highlight-col
   transform: background 1s ease
-  color: black
+  color: $invert-font-col
   &::after
     content: '✔'
 
 /* Search Results Section */
 .list-sort-control
-  padding: 1rem
+  padding: 2rem
   margin: 0 auto
   box-sizing: border-box
   background: $main-col
   text-align: center
-  color: $highlight-col
-  font-weight: bold
   font-size: 1.1rem
+  box-shadow: 0 3px 5px rgba(0,0,0,0.12), 0 2px 2px rgba(0,0,0,0.24)
 
 .list-sort-control__button
   display: inline-block
-  padding: 0 1rem
+  padding: 1rem
   text-decoration: underline
   cursor: pointer
+  &:hover,&:focus
+    color: $highlight-col
 
 /* List Item */
-$hotel-li-pad: 1rem
+.hotel-list
+  min-width: 20rem
+  max-width: 37.5rem
+  padding-top: 2rem
+
+.hotel-list--not-found
+  text-align: center
+  font-size: 1.5rem
+  padding: 5rem 0
+
 .hotel
   position: relative
-  padding: $hotel-li-pad
-  border-bottom: 1px solid grey
+  border-bottom: 1px solid rgba(grey, 0.2)
   border-left: 0px solid transparent
-  transition: border 0.15s linear
+  transition: border 0.15s linear, padding 0.2s ease
+  min-height: 5rem
+  &:last-of-type
+    border-bottom: none
   &:hover,&:focus
-    border-left: 0.3rem solid $main-col
-    transition: border-left 0.2s linear
+    padding: 0.2rem
+    border-left: 0.4rem solid $highlight-col
+    transition: border-left 0.2s linear, padding 0.2s ease
+  img
+    height: 100%
+    width: 5rem
+    float: left
+    margin-right: 1rem
 
 .hotel__name
   display: inline-block
+  padding: 1rem 0 0.2rem 0
   font-weight: bold
 
 .hotel__rating
   display: inline
-  padding: 0.5rem
+  padding: 0.3rem
   &::after
     font-size: 120%
     vertical-align: text-bottom
@@ -131,6 +160,6 @@ $hotel-li-pad: 1rem
     content: '★'
 
 .hotel__facilities
-  padding: 0.2rem 0
+  padding: 0.2rem 1rem
   color: lighten($main-font-col,30%)
   font-size: 0.8rem

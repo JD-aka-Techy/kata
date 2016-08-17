@@ -8,7 +8,9 @@ describe('hotels reducer', () => {
     const expected = [];
     const actual = hotels(undefined, {});
     expect(actual).to.deep.equal(expected,
-      'The hotels reducer should instantiate intial state to an empty array');
+      `The hotels reducer should instantiate intial state to an empty array
+      NOTE: tempData in hotels.js will cause this to fail. change to []
+      `);
   });
 
   it('should handle SORT actions', () => {

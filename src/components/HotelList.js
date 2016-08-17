@@ -7,11 +7,11 @@ import HotelListItem from './HotelListItem';
 */
 const HotelList = ({ hotels }) => {
   return hotels.length === 0 ?
-    <ul>
-      <li>Not found</li>
+    <ul className="hotel-list">
+      <li className="hotel-list--not-found">Not found</li>
     </ul>
     : (
-    <ul className="search-results-list">
+    <ul className="hotel-list">
     {
       hotels.map((hotel,i) => (
         <HotelListItem key={i} hotel={hotel}/>
