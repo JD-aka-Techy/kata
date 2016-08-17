@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 /*
   Main application component.
 */
-class App extends React.Component {
+export class _App extends React.Component {
 
   constructor(props) {
     super(props);
@@ -41,11 +41,9 @@ class App extends React.Component {
   }
 };
 
-App = connect(
+export default connect(
   state => state,
   dispatch => ({
     actions: bindActionCreators(Actions, dispatch)
   })
-)(App);
-
-export default App;
+)(_App);

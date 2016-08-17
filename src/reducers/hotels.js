@@ -9,9 +9,9 @@ function sorter(state, direction, field) {
 }
 
 // temp data
-import tempData from '../tempData';
+//import tempData from '../tempData';
 
-const initialState = tempData;
+const initialState = [];
 
 function hotels( state = initialState, action ) {
   switch(action.type) {
