@@ -21,4 +21,6 @@ const HotelList = ({ hotels }) => {
   );
 };
 
+
+
 export default HotelList;
